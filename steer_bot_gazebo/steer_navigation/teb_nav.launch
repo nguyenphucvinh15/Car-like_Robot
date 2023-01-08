@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Really Usefull Robot -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find steer_bot_description)/urdf/steer_bot.urdf.xacro'" />
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+    <param name="use_gui" value="True"/>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- Map server -->
+  <arg name="map_file" default="$(find steer_bot_gazebo)/maps/map_final.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!--- Run move base -->
+  <include file="$(find steer_bot_gazebo)/steer_slam/move_base_new.launch" />
+
+  <!--- Run AMCL -->
+  <include file="$(find steer_bot_gazebo)/steer_navigation/amcl_new.launch" />
+
+ <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find steer_bot_viz)/final_viz.rviz"/>
+
+</launch>
+

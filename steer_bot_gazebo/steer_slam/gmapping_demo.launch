@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+  <!-- Really Usefull Robot -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find steer_bot_description)/urdf/steer_bot.urdf.xacro'" />
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui">
+    <param name="use_gui" value="True"/>
+  </node>
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+
+
+  <!--- Run gmapping -->
+  <include file="$(find steer_bot_gazebo)/steer_slam/gmapping.launch" />
+
+ <!-- rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" output="screen"/>
+
+</launch>
+
